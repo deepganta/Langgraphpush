@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2000 1400" fill="none">
+  <defs>
+    <linearGradient id="g1" x1="120" y1="120" x2="1820" y2="1180" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#7EA8FF" stop-opacity="0.32"/>
+      <stop offset="1" stop-color="#E3C692" stop-opacity="0.30"/>
+    </linearGradient>
+    <radialGradient id="glow1" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(1530 260) rotate(90) scale(460)">
+      <stop stop-color="#91B2F1" stop-opacity="0.38"/>
+      <stop offset="1" stop-color="#91B2F1" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glow2" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(360 980) rotate(90) scale(420)">
+      <stop stop-color="#C7A56B" stop-opacity="0.32"/>
+      <stop offset="1" stop-color="#C7A56B" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="2000" height="1400" fill="#0A101A"/>
+  <rect width="2000" height="1400" fill="url(#glow1)"/>
+  <rect width="2000" height="1400" fill="url(#glow2)"/>
+
+  <g stroke="#6D87B9" stroke-opacity="0.2" stroke-width="1.1">
+    <path d="M90 140H1910"/>
+    <path d="M90 300H1910"/>
+    <path d="M90 460H1910"/>
+    <path d="M90 620H1910"/>
+    <path d="M90 780H1910"/>
+    <path d="M90 940H1910"/>
+    <path d="M90 1100H1910"/>
+    <path d="M90 1260H1910"/>
+    <path d="M180 90V1310"/>
+    <path d="M420 90V1310"/>
+    <path d="M660 90V1310"/>
+    <path d="M900 90V1310"/>
+    <path d="M1140 90V1310"/>
+    <path d="M1380 90V1310"/>
+    <path d="M1620 90V1310"/>
+    <path d="M1860 90V1310"/>
+  </g>
+
+  <g stroke="url(#g1)" stroke-width="2.2">
+    <path d="M120 1140C320 1060 460 880 640 850C830 820 980 950 1140 900C1340 840 1520 620 1880 420"/>
+    <path d="M120 920C300 860 460 720 630 700C840 670 990 790 1170 740C1360 690 1570 500 1880 260"/>
+    <path d="M120 700C300 640 430 520 620 500C810 480 980 600 1160 560C1370 510 1560 360 1880 160"/>
+    <path d="M120 1220C320 1180 470 1120 650 1040C830 960 980 820 1180 800C1390 780 1590 860 1880 1040"/>
+    <path d="M120 360C320 340 500 320 680 260C880 200 1010 100 1210 120C1430 140 1640 300 1880 520"/>
+  </g>
+
+  <g fill="#E3C692" fill-opacity="0.78">
+    <circle cx="180" cy="1140" r="8"/>
+    <circle cx="420" cy="940" r="7"/>
+    <circle cx="660" cy="700" r="8"/>
+    <circle cx="900" cy="620" r="9"/>
+    <circle cx="1140" cy="740" r="8"/>
+    <circle cx="1380" cy="690" r="8"/>
+    <circle cx="1620" cy="500" r="8"/>
+    <circle cx="1860" cy="260" r="9"/>
+    <circle cx="420" cy="340" r="7"/>
+    <circle cx="660" cy="260" r="8"/>
+    <circle cx="1140" cy="120" r="8"/>
+    <circle cx="1620" cy="300" r="8"/>
+  </g>
+</svg>
