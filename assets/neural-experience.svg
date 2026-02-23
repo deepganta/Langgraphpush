@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" fill="none">
+  <defs>
+    <linearGradient id="beamB" x1="80" y1="820" x2="1510" y2="120" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#8EAEE7" stop-opacity="0.28"/>
+      <stop offset="1" stop-color="#E1BE86" stop-opacity="0.3"/>
+    </linearGradient>
+    <radialGradient id="glowB" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(330 180) rotate(90) scale(260)">
+      <stop stop-color="#6E96E4" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#6E96E4" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="#0D1422"/>
+  <rect width="1600" height="900" fill="url(#glowB)"/>
+  <g stroke="url(#beamB)" stroke-width="2">
+    <path d="M90 760C300 700 470 540 650 520C820 500 940 590 1080 550C1260 500 1380 320 1520 240"/>
+    <path d="M90 620C260 560 410 430 560 390C750 340 890 440 1060 410C1240 380 1360 250 1510 150"/>
+    <path d="M90 450C260 390 390 280 580 270C760 260 900 340 1070 320C1250 300 1360 190 1510 100"/>
+  </g>
+  <g stroke="#7796D2" stroke-opacity="0.25" stroke-width="1.5">
+    <path d="M140 120L620 420L1120 220L1500 520"/>
+    <path d="M140 260L620 560L1120 360L1500 660"/>
+    <path d="M140 400L620 700L1120 500L1500 800"/>
+    <path d="M140 540L620 840L1120 640L1500 900"/>
+  </g>
+  <g fill="#E1BE86" fill-opacity="0.76">
+    <circle cx="140" cy="120" r="6"/>
+    <circle cx="620" cy="420" r="7"/>
+    <circle cx="1120" cy="220" r="7"/>
+    <circle cx="1500" cy="520" r="7"/>
+    <circle cx="620" cy="560" r="7"/>
+    <circle cx="1120" cy="360" r="7"/>
+    <circle cx="620" cy="700" r="7"/>
+    <circle cx="1120" cy="500" r="7"/>
+  </g>
+</svg>
