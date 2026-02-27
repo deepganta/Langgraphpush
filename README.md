@@ -56,3 +56,8 @@ python3 -m http.server 4173
 ## Existing legacy backend
 
 The pre-existing `backend/` folder remains untouched and can still be used independently.
+
+## Optional Render backend deployment
+
+This repo includes `render.yaml` for one-click backend deployment on Render.
+Connect the GitHub repo in Render, create the web service from the blueprint, and set `OPENAI_API_KEY`.
