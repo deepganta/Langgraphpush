@@ -11,4 +11,3 @@ nutrition-api/.venv/
 nutrition-api/__pycache__/
 nutrition-api/node_modules/
 nutrition-api/data/nutrition-cache.json
-nutrition-api/data/meal_log.xlsx

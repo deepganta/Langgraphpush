@@ -45,6 +45,7 @@ python3 -m http.server 4173
 ## Data storage
 
 - Meal logs are saved in backend Excel database: `nutrition-api/data/meal_log.xlsx`.
+- The workbook is committed to GitHub as the seed database file.
 - Frontend now reads/writes meals through backend API endpoints.
 
 ## Accuracy and cost controls
