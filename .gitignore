@@ -1,2 +1,14 @@
 .DS_Store
 Thumbs.db
+.venv/
+backend/.env
+backend/.venv/
+backend/credentials/*.json
+backend/data/token.json
+backend/data/state.json
+nutrition-api/.env
+nutrition-api/.venv/
+nutrition-api/__pycache__/
+nutrition-api/node_modules/
+nutrition-api/data/nutrition-cache.json
+nutrition-api/data/meal_log.xlsx
