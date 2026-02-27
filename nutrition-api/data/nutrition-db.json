@@ -1,0 +1,459 @@
+{
+  "foods": [
+    {
+      "name": "chicken breast cooked",
+      "aliases": ["chicken breast", "chicken", "grilled chicken", "boiled chicken"],
+      "calories": 165,
+      "protein": 31,
+      "fiber": 0
+    },
+    {
+      "name": "chicken thigh cooked",
+      "aliases": ["chicken thigh"],
+      "calories": 209,
+      "protein": 26,
+      "fiber": 0
+    },
+    {
+      "name": "salmon cooked",
+      "aliases": ["salmon", "grilled salmon"],
+      "calories": 206,
+      "protein": 22,
+      "fiber": 0
+    },
+    {
+      "name": "shrimp cooked",
+      "aliases": ["shrimp", "prawns"],
+      "calories": 99,
+      "protein": 24,
+      "fiber": 0
+    },
+    {
+      "name": "tuna canned in water",
+      "aliases": ["tuna", "canned tuna"],
+      "calories": 116,
+      "protein": 26,
+      "fiber": 0
+    },
+    {
+      "name": "egg whole",
+      "aliases": ["egg", "whole egg", "boiled egg"],
+      "calories": 143,
+      "protein": 13,
+      "fiber": 0
+    },
+    {
+      "name": "egg white",
+      "aliases": ["egg whites", "egg white"],
+      "calories": 52,
+      "protein": 11,
+      "fiber": 0
+    },
+    {
+      "name": "paneer",
+      "aliases": ["cottage paneer"],
+      "calories": 265,
+      "protein": 18,
+      "fiber": 0
+    },
+    {
+      "name": "tofu firm",
+      "aliases": ["tofu"],
+      "calories": 144,
+      "protein": 17.3,
+      "fiber": 2.3
+    },
+    {
+      "name": "greek yogurt nonfat plain",
+      "aliases": ["greek yogurt", "greek yoghurt"],
+      "calories": 59,
+      "protein": 10.3,
+      "fiber": 0
+    },
+    {
+      "name": "yogurt plain whole milk",
+      "aliases": ["curd", "dahi", "plain yogurt"],
+      "calories": 61,
+      "protein": 3.5,
+      "fiber": 0
+    },
+    {
+      "name": "cottage cheese low fat",
+      "aliases": ["cottage cheese"],
+      "calories": 82,
+      "protein": 11.1,
+      "fiber": 0
+    },
+    {
+      "name": "cheddar cheese",
+      "aliases": ["cheese", "cheddar"],
+      "calories": 403,
+      "protein": 25,
+      "fiber": 0
+    },
+    {
+      "name": "whey protein powder",
+      "aliases": ["whey", "protein powder"],
+      "calories": 400,
+      "protein": 80,
+      "fiber": 0
+    },
+    {
+      "name": "milk whole",
+      "aliases": ["whole milk", "full fat milk"],
+      "calories": 61,
+      "protein": 3.2,
+      "fiber": 0
+    },
+    {
+      "name": "milk skim",
+      "aliases": ["skim milk", "low fat milk"],
+      "calories": 34,
+      "protein": 3.4,
+      "fiber": 0
+    },
+    {
+      "name": "rice cooked white",
+      "aliases": ["white rice", "rice"],
+      "calories": 130,
+      "protein": 2.7,
+      "fiber": 0.4
+    },
+    {
+      "name": "brown rice cooked",
+      "aliases": ["brown rice"],
+      "calories": 111,
+      "protein": 2.6,
+      "fiber": 1.8
+    },
+    {
+      "name": "quinoa cooked",
+      "aliases": ["quinoa"],
+      "calories": 120,
+      "protein": 4.4,
+      "fiber": 2.8
+    },
+    {
+      "name": "oats dry",
+      "aliases": ["oats", "rolled oats", "oatmeal dry"],
+      "calories": 389,
+      "protein": 16.9,
+      "fiber": 10.6
+    },
+    {
+      "name": "pasta cooked",
+      "aliases": ["pasta"],
+      "calories": 157,
+      "protein": 5.8,
+      "fiber": 1.8
+    },
+    {
+      "name": "whole wheat bread",
+      "aliases": ["wheat bread", "brown bread"],
+      "calories": 247,
+      "protein": 13,
+      "fiber": 6.7
+    },
+    {
+      "name": "sourdough bread",
+      "aliases": ["sourdough"],
+      "calories": 289,
+      "protein": 9.4,
+      "fiber": 2.7
+    },
+    {
+      "name": "roti whole wheat",
+      "aliases": ["roti", "chapati", "phulka"],
+      "calories": 297,
+      "protein": 8.5,
+      "fiber": 7
+    },
+    {
+      "name": "idli",
+      "aliases": ["idly"],
+      "calories": 146,
+      "protein": 4.5,
+      "fiber": 1.2
+    },
+    {
+      "name": "dosa plain",
+      "aliases": ["dosa", "plain dosa"],
+      "calories": 184,
+      "protein": 4.8,
+      "fiber": 1.6
+    },
+    {
+      "name": "poha cooked",
+      "aliases": ["poha"],
+      "calories": 110,
+      "protein": 2.5,
+      "fiber": 1.2
+    },
+    {
+      "name": "upma",
+      "aliases": ["rava upma", "suji upma"],
+      "calories": 135,
+      "protein": 3.1,
+      "fiber": 2
+    },
+    {
+      "name": "banana",
+      "aliases": ["ripe banana"],
+      "calories": 89,
+      "protein": 1.1,
+      "fiber": 2.6
+    },
+    {
+      "name": "apple",
+      "aliases": ["red apple", "green apple"],
+      "calories": 52,
+      "protein": 0.3,
+      "fiber": 2.4
+    },
+    {
+      "name": "orange",
+      "aliases": ["mandarin"],
+      "calories": 47,
+      "protein": 0.9,
+      "fiber": 2.4
+    },
+    {
+      "name": "mango",
+      "aliases": ["ripe mango"],
+      "calories": 60,
+      "protein": 0.8,
+      "fiber": 1.6
+    },
+    {
+      "name": "grapes",
+      "aliases": ["green grapes", "black grapes"],
+      "calories": 69,
+      "protein": 0.7,
+      "fiber": 0.9
+    },
+    {
+      "name": "strawberries",
+      "aliases": ["strawberry"],
+      "calories": 32,
+      "protein": 0.7,
+      "fiber": 2
+    },
+    {
+      "name": "blueberries",
+      "aliases": ["blueberry"],
+      "calories": 57,
+      "protein": 0.7,
+      "fiber": 2.4
+    },
+    {
+      "name": "avocado",
+      "aliases": ["avocado fruit"],
+      "calories": 160,
+      "protein": 2,
+      "fiber": 6.7
+    },
+    {
+      "name": "broccoli",
+      "aliases": ["broccoli cooked", "broccoli raw"],
+      "calories": 35,
+      "protein": 2.4,
+      "fiber": 3.3
+    },
+    {
+      "name": "spinach raw",
+      "aliases": ["spinach", "palak"],
+      "calories": 23,
+      "protein": 2.9,
+      "fiber": 2.2
+    },
+    {
+      "name": "carrot raw",
+      "aliases": ["carrot", "gajar"],
+      "calories": 41,
+      "protein": 0.9,
+      "fiber": 2.8
+    },
+    {
+      "name": "cucumber",
+      "aliases": ["cucumber raw"],
+      "calories": 15,
+      "protein": 0.7,
+      "fiber": 0.5
+    },
+    {
+      "name": "tomato",
+      "aliases": ["tomatoes"],
+      "calories": 18,
+      "protein": 0.9,
+      "fiber": 1.2
+    },
+    {
+      "name": "bell pepper",
+      "aliases": ["capsicum"],
+      "calories": 31,
+      "protein": 1,
+      "fiber": 2.1
+    },
+    {
+      "name": "potato boiled",
+      "aliases": ["boiled potato", "potato"],
+      "calories": 87,
+      "protein": 1.9,
+      "fiber": 1.8
+    },
+    {
+      "name": "sweet potato baked",
+      "aliases": ["sweet potato"],
+      "calories": 90,
+      "protein": 2,
+      "fiber": 3.3
+    },
+    {
+      "name": "lentils cooked",
+      "aliases": ["lentils", "masoor dal"],
+      "calories": 116,
+      "protein": 9,
+      "fiber": 7.9
+    },
+    {
+      "name": "chickpeas cooked",
+      "aliases": ["chickpeas", "chana", "garbanzo beans"],
+      "calories": 164,
+      "protein": 8.9,
+      "fiber": 7.6
+    },
+    {
+      "name": "black beans cooked",
+      "aliases": ["black beans"],
+      "calories": 132,
+      "protein": 8.9,
+      "fiber": 8.7
+    },
+    {
+      "name": "kidney beans cooked",
+      "aliases": ["rajma", "kidney beans"],
+      "calories": 127,
+      "protein": 8.7,
+      "fiber": 6.4
+    },
+    {
+      "name": "dal cooked",
+      "aliases": ["dal", "dhal"],
+      "calories": 110,
+      "protein": 7,
+      "fiber": 5
+    },
+    {
+      "name": "sambar",
+      "aliases": ["sambhar"],
+      "calories": 62,
+      "protein": 2.8,
+      "fiber": 2.2
+    },
+    {
+      "name": "mixed vegetables cooked",
+      "aliases": ["mixed vegetables", "veg mix"],
+      "calories": 72,
+      "protein": 2.5,
+      "fiber": 3.4
+    },
+    {
+      "name": "almonds",
+      "aliases": ["almond"],
+      "calories": 579,
+      "protein": 21.2,
+      "fiber": 12.5
+    },
+    {
+      "name": "walnuts",
+      "aliases": ["walnut"],
+      "calories": 654,
+      "protein": 15.2,
+      "fiber": 6.7
+    },
+    {
+      "name": "peanuts dry roasted",
+      "aliases": ["peanuts", "groundnuts"],
+      "calories": 585,
+      "protein": 24.4,
+      "fiber": 8.4
+    },
+    {
+      "name": "peanut butter",
+      "aliases": ["natural peanut butter"],
+      "calories": 588,
+      "protein": 25,
+      "fiber": 6
+    },
+    {
+      "name": "chia seeds",
+      "aliases": ["chia"],
+      "calories": 486,
+      "protein": 16.5,
+      "fiber": 34.4
+    },
+    {
+      "name": "flax seeds",
+      "aliases": ["flaxseed", "linseed"],
+      "calories": 534,
+      "protein": 18.3,
+      "fiber": 27.3
+    },
+    {
+      "name": "pumpkin seeds",
+      "aliases": ["pepitas"],
+      "calories": 559,
+      "protein": 30.2,
+      "fiber": 6
+    },
+    {
+      "name": "sunflower seeds",
+      "aliases": ["sunflower kernel"],
+      "calories": 584,
+      "protein": 20.8,
+      "fiber": 8.6
+    },
+    {
+      "name": "olive oil",
+      "aliases": ["extra virgin olive oil", "oil"],
+      "calories": 884,
+      "protein": 0,
+      "fiber": 0
+    },
+    {
+      "name": "butter",
+      "aliases": ["salted butter", "unsalted butter"],
+      "calories": 717,
+      "protein": 0.9,
+      "fiber": 0
+    },
+    {
+      "name": "biryani chicken",
+      "aliases": ["chicken biryani", "biryani"],
+      "calories": 180,
+      "protein": 8,
+      "fiber": 0.9
+    },
+    {
+      "name": "pizza cheese",
+      "aliases": ["pizza", "cheese pizza"],
+      "calories": 266,
+      "protein": 11,
+      "fiber": 2.3
+    },
+    {
+      "name": "burger beef",
+      "aliases": ["burger", "beef burger"],
+      "calories": 295,
+      "protein": 17,
+      "fiber": 1.5
+    },
+    {
+      "name": "french fries",
+      "aliases": ["fries", "potato fries"],
+      "calories": 312,
+      "protein": 3.4,
+      "fiber": 3.8
+    }
+  ]
+}
