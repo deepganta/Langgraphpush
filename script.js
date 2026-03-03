@@ -149,18 +149,31 @@ function loadLocalEntries() {
 }
 
 function saveLocalEntries(localEntries) {
-  localStorage.setItem(STORAGE_LOCAL_ENTRIES, JSON.stringify(localEntries));
+  try {
+    localStorage.setItem(STORAGE_LOCAL_ENTRIES, JSON.stringify(localEntries));
+  } catch (error) {
+    console.error("Failed to persist local entries", error);
+  }
 }
 
 function getActiveDate() {
   return activeDateInput.value || nowDateISO();
 }
 
+function sortEntriesByTime(list) {
+  return [...list].sort((a, b) => String(a.time || "").localeCompare(String(b.time || "")));
+}
+
+function upsertVisibleEntry(entry) {
+  if (!entry || entry.date !== getActiveDate()) return;
+  const filtered = entries.filter((item) => String(item.id) !== String(entry.id));
+  entries = sortEntriesByTime([...filtered, entry]);
+  render();
+}
+
 function mealsForActiveDate() {
   const date = getActiveDate();
-  return entries
-    .filter((entry) => entry.date === date)
-    .sort((a, b) => String(a.time || "").localeCompare(String(b.time || "")));
+  return sortEntriesByTime(entries.filter((entry) => entry.date === date));
 }
 
 function totalsForDate(date) {
@@ -519,12 +532,12 @@ async function handleMealSubmit(event) {
 
     try {
       if (saveLocallyOnly) {
-        createLocalEntry(payload);
-        await loadEntriesForActiveDate({ silent: true });
+        const localEntry = createLocalEntry(payload);
+        upsertVisibleEntry(localEntry);
         setStatus(`Added ${foodName} (${grams}g). Saved in this browser as a pending entry.`, "ok");
       } else {
-        await createEntry(payload);
-        await loadEntriesForActiveDate({ silent: true });
+        const createdEntry = await createEntry(payload);
+        upsertVisibleEntry(createdEntry);
         setStatus(`Added ${foodName} (${grams}g). Saved to backend database.`, "ok");
       }
     } catch (error) {
@@ -533,7 +546,7 @@ async function handleMealSubmit(event) {
       }
 
       if (!manualNutrition) {
-        createLocalEntry({
+        const pendingEntry = createLocalEntry({
           ...payload,
           calories: null,
           protein: null,
@@ -541,11 +554,11 @@ async function handleMealSubmit(event) {
           source: "pending",
           matchedFood: foodName
         });
-        await loadEntriesForActiveDate({ silent: true });
+        upsertVisibleEntry(pendingEntry);
         setStatus(`Added ${foodName} (${grams}g). Saved in this browser without nutrition values because backend is unavailable.`, "ok");
       } else {
-        createLocalEntry({ ...payload, source: "manual" });
-        await loadEntriesForActiveDate({ silent: true });
+        const localManualEntry = createLocalEntry({ ...payload, source: "manual" });
+        upsertVisibleEntry(localManualEntry);
         setStatus(`Added ${foodName} (${grams}g). Saved only in this browser because backend is unavailable.`, "ok");
       }
     }
