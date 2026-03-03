@@ -469,6 +469,7 @@ async function handleMealSubmit(event) {
     let nutrition = null;
     let source = "unknown";
     let matchedFood = foodName;
+    let saveLocallyOnly = false;
 
     if (manualNutrition) {
       nutrition = manualNutrition;
@@ -476,14 +477,30 @@ async function handleMealSubmit(event) {
       setStatus("Using manual calories/protein values...");
     } else {
       setStatus(preferAi ? "Estimating with GPT-4..." : "Estimating nutrition values...");
-      const estimate = await requestNutrition({ foodName, grams, allowAi, preferAi });
-      nutrition = {
-        calories: safeNumber(estimate.calories),
-        protein: safeNumber(estimate.protein),
-        fiber: safeNumber(estimate.fiber)
-      };
-      source = String(estimate.source || "unknown");
-      matchedFood = String(estimate.matchedFood || foodName);
+      try {
+        const estimate = await requestNutrition({ foodName, grams, allowAi, preferAi });
+        nutrition = {
+          calories: safeNumber(estimate.calories),
+          protein: safeNumber(estimate.protein),
+          fiber: safeNumber(estimate.fiber)
+        };
+        source = String(estimate.source || "unknown");
+        matchedFood = String(estimate.matchedFood || foodName);
+      } catch (error) {
+        if (!isBackendUnavailable(error)) {
+          throw error;
+        }
+
+        nutrition = {
+          calories: null,
+          protein: null,
+          fiber: null
+        };
+        source = "pending";
+        matchedFood = foodName;
+        saveLocallyOnly = true;
+        setStatus(`Backend unavailable. Saving ${foodName} as a pending browser entry.`, "ok");
+      }
     }
 
     const payload = {
@@ -501,9 +518,15 @@ async function handleMealSubmit(event) {
     };
 
     try {
-      await createEntry(payload);
-      await loadEntriesForActiveDate({ silent: true });
-      setStatus(`Added ${foodName} (${grams}g). Saved to backend database.`, "ok");
+      if (saveLocallyOnly) {
+        createLocalEntry(payload);
+        await loadEntriesForActiveDate({ silent: true });
+        setStatus(`Added ${foodName} (${grams}g). Saved in this browser as a pending entry.`, "ok");
+      } else {
+        await createEntry(payload);
+        await loadEntriesForActiveDate({ silent: true });
+        setStatus(`Added ${foodName} (${grams}g). Saved to backend database.`, "ok");
+      }
     } catch (error) {
       if (!isBackendUnavailable(error)) {
         throw error;
