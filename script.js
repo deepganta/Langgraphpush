@@ -1,5 +1,6 @@
 const STORAGE_GOALS = "nutrition_tracker_goals_v1";
 const STORAGE_API_URL = "nutrition_tracker_api_url_v1";
+const STORAGE_LOCAL_ENTRIES = "nutrition_tracker_local_entries_v1";
 
 const DEFAULT_GOALS = {
   calories: 2200,
@@ -7,7 +8,8 @@ const DEFAULT_GOALS = {
   fiber: 35
 };
 
-const DEFAULT_API_URL = "http://localhost:8787/api";
+const IS_HOSTED_FRONTEND = window.location.hostname.endsWith("github.io");
+const DEFAULT_API_URL = IS_HOSTED_FRONTEND ? "" : "http://localhost:8787/api";
 
 const mealForm = document.querySelector("#meal-form");
 const goalForm = document.querySelector("#goal-form");
@@ -65,8 +67,23 @@ function nowTimeHM() {
 }
 
 function normalizeApiUrl(url) {
-  const clean = String(url || "").trim().replace(/\/+$/, "");
-  return clean || DEFAULT_API_URL;
+  return String(url || "").trim().replace(/\/+$/, "");
+}
+
+function getConfiguredApiUrl() {
+  const saved = normalizeApiUrl(localStorage.getItem(STORAGE_API_URL));
+  if (saved) return saved;
+  return normalizeApiUrl(DEFAULT_API_URL);
+}
+
+function saveApiUrl(url) {
+  const clean = normalizeApiUrl(url);
+  if (clean) {
+    localStorage.setItem(STORAGE_API_URL, clean);
+  } else {
+    localStorage.removeItem(STORAGE_API_URL);
+  }
+  return clean;
 }
 
 function roundValue(value) {
@@ -80,6 +97,10 @@ function safeNumber(value) {
 
 function formatValue(value) {
   return roundValue(value).toFixed(1).replace(/\.0$/, "");
+}
+
+function newLocalId() {
+  return `local_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
 }
 
 function setStatus(message, type = "") {
@@ -111,14 +132,19 @@ function saveGoals() {
   localStorage.setItem(STORAGE_GOALS, JSON.stringify(goals));
 }
 
-function loadApiUrl() {
-  return normalizeApiUrl(localStorage.getItem(STORAGE_API_URL));
+function loadLocalEntries() {
+  try {
+    const raw = localStorage.getItem(STORAGE_LOCAL_ENTRIES);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (error) {
+    console.error("Failed to load local entries", error);
+    return [];
+  }
 }
 
-function saveApiUrl(url) {
-  const clean = normalizeApiUrl(url);
-  localStorage.setItem(STORAGE_API_URL, clean);
-  return clean;
+function saveLocalEntries(localEntries) {
+  localStorage.setItem(STORAGE_LOCAL_ENTRIES, JSON.stringify(localEntries));
 }
 
 function getActiveDate() {
@@ -176,7 +202,8 @@ function sourcePill(source) {
     "local-db": "Local DB",
     cache: "Cache",
     openai: "GPT-4",
-    manual: "Manual"
+    manual: "Manual",
+    local-browser: "Browser"
   };
   const label = labelMap[clean] || clean;
   return `<span class="source-pill source-${clean}">${label}</span>`;
@@ -270,12 +297,28 @@ function parseManualNutrition() {
   };
 }
 
+function makeNoBackendError() {
+  const error = new Error("No backend API configured.");
+  error.code = "NO_BACKEND";
+  return error;
+}
+
+function isBackendUnavailable(error) {
+  return error && (error.code === "NO_BACKEND" || error.code === "BACKEND_UNREACHABLE");
+}
+
 async function apiRequest(path, options = {}) {
   const base = saveApiUrl(apiUrlInput.value);
-  const endpoint = `${normalizeApiUrl(base)}${path}`;
+  if (!base) {
+    throw makeNoBackendError();
+  }
+
+  const endpoint = `${base}${path}`;
 
   const response = await fetch(endpoint, options).catch(() => {
-    throw new Error("Could not connect to backend API.");
+    const error = new Error("Could not connect to backend API.");
+    error.code = "BACKEND_UNREACHABLE";
+    throw error;
   });
 
   const payload = await response.json().catch(() => ({}));
@@ -330,6 +373,34 @@ async function clearDateEntries(date) {
   });
 }
 
+function createLocalEntry(payload) {
+  const localEntries = loadLocalEntries();
+  const entry = {
+    id: newLocalId(),
+    ...payload,
+    source: payload.source === "manual" ? "manual" : payload.source || "local-browser"
+  };
+  localEntries.push(entry);
+  saveLocalEntries(localEntries);
+  return entry;
+}
+
+function fetchLocalEntriesForDate(date) {
+  return loadLocalEntries().filter((entry) => entry.date === date);
+}
+
+function deleteLocalEntry(entryId) {
+  const localEntries = loadLocalEntries();
+  const filtered = localEntries.filter((entry) => String(entry.id) !== String(entryId));
+  saveLocalEntries(filtered);
+}
+
+function clearLocalDateEntries(date) {
+  const localEntries = loadLocalEntries();
+  const filtered = localEntries.filter((entry) => entry.date !== date);
+  saveLocalEntries(filtered);
+}
+
 async function loadEntriesForActiveDate({ silent = false } = {}) {
   const seq = ++loadSequence;
   const date = getActiveDate();
@@ -341,13 +412,23 @@ async function loadEntriesForActiveDate({ silent = false } = {}) {
     render();
 
     if (!silent) {
-      setStatus(`Loaded ${fetched.length} meal(s) from database for ${date}.`, "ok");
+      setStatus(`Loaded ${fetched.length} meal(s) from backend database for ${date}.`, "ok");
     }
   } catch (error) {
     if (seq !== loadSequence) return;
+
+    if (isBackendUnavailable(error)) {
+      entries = fetchLocalEntriesForDate(date);
+      render();
+      if (!silent) {
+        setStatus("Backend not connected. Using browser-only storage for this device.");
+      }
+      return;
+    }
+
     entries = [];
     render();
-    setStatus(error.message || "Could not load meals from backend database.", "error");
+    setStatus(error.message || "Could not load meals.", "error");
   }
 }
 
@@ -413,10 +494,24 @@ async function handleMealSubmit(event) {
       imageName: mealImageInput.files && mealImageInput.files[0] ? mealImageInput.files[0].name : ""
     };
 
-    await createEntry(payload);
-    await loadEntriesForActiveDate({ silent: true });
+    try {
+      await createEntry(payload);
+      await loadEntriesForActiveDate({ silent: true });
+      setStatus(`Added ${foodName} (${grams}g). Saved to backend database.`, "ok");
+    } catch (error) {
+      if (!isBackendUnavailable(error)) {
+        throw error;
+      }
 
-    setStatus(`Added ${foodName} (${grams}g). Saved to Excel database.`, "ok");
+      if (!manualNutrition) {
+        throw new Error("Backend is unavailable. Use manual calories/protein or provide a working API URL.");
+      }
+
+      createLocalEntry({ ...payload, source: "manual" });
+      await loadEntriesForActiveDate({ silent: true });
+      setStatus(`Added ${foodName} (${grams}g). Saved only in this browser because backend is unavailable.`, "ok");
+    }
+
     resetMealFormKeepDefaults();
   } catch (error) {
     console.error(error);
@@ -453,8 +548,14 @@ async function handleRowDelete(event) {
   try {
     await deleteEntry(id);
     await loadEntriesForActiveDate({ silent: true });
-    setStatus("Meal deleted from database.", "ok");
+    setStatus("Meal deleted from backend database.", "ok");
   } catch (error) {
+    if (isBackendUnavailable(error)) {
+      deleteLocalEntry(id);
+      await loadEntriesForActiveDate({ silent: true });
+      setStatus("Meal deleted from browser-only storage.", "ok");
+      return;
+    }
     setStatus(error.message || "Could not delete meal.", "error");
   }
 }
@@ -474,8 +575,14 @@ async function handleClearSelectedDay() {
   try {
     await clearDateEntries(date);
     await loadEntriesForActiveDate({ silent: true });
-    setStatus(`Cleared all meals for ${date}.`, "ok");
+    setStatus(`Cleared all meals for ${date} from backend database.`, "ok");
   } catch (error) {
+    if (isBackendUnavailable(error)) {
+      clearLocalDateEntries(date);
+      await loadEntriesForActiveDate({ silent: true });
+      setStatus(`Cleared all meals for ${date} from browser-only storage.`, "ok");
+      return;
+    }
     setStatus(error.message || "Could not clear selected day.", "error");
   }
 }
@@ -492,7 +599,7 @@ function setInitialFormValues() {
   mealTimeInput.value = nowTimeHM();
   mealTypeInput.value = "Breakfast";
 
-  apiUrlInput.value = loadApiUrl();
+  apiUrlInput.value = getConfiguredApiUrl();
 
   goalCaloriesInput.value = goals.calories;
   goalProteinInput.value = goals.protein;
@@ -520,8 +627,7 @@ function wireEvents() {
   clearDayButton.addEventListener("click", handleClearSelectedDay);
 
   apiUrlInput.addEventListener("change", () => {
-    const value = saveApiUrl(apiUrlInput.value);
-    apiUrlInput.value = value;
+    apiUrlInput.value = saveApiUrl(apiUrlInput.value);
   });
 
   allowAiInput.addEventListener("change", syncAiToggles);
@@ -532,7 +638,7 @@ async function init() {
   setInitialFormValues();
   wireEvents();
   render();
-  await loadEntriesForActiveDate({ silent: true });
+  await loadEntriesForActiveDate({ silent: false });
 }
 
 init();
