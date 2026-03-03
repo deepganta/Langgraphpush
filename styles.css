@@ -411,6 +411,11 @@ td .row-delete {
   color: #355063;
 }
 
+.source-pending {
+  background: #f0ece3;
+  color: #7a5b1d;
+}
+
 .source-manual {
   background: #e9ecff;
   color: #2d3f95;

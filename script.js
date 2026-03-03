@@ -99,6 +99,11 @@ function formatValue(value) {
   return roundValue(value).toFixed(1).replace(/\.0$/, "");
 }
 
+function formatNutrientCell(value, unit = "") {
+  if (value === null || value === undefined || value === "") return "--";
+  return `${formatValue(value)}${unit}`;
+}
+
 function newLocalId() {
   return `local_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
 }
@@ -203,7 +208,8 @@ function sourcePill(source) {
     cache: "Cache",
     openai: "GPT-4",
     manual: "Manual",
-    local-browser: "Browser"
+    local-browser: "Browser",
+    pending: "Pending"
   };
   const label = labelMap[clean] || clean;
   return `<span class="source-pill source-${clean}">${label}</span>`;
@@ -228,9 +234,9 @@ function renderMealTable() {
       <td>${entry.mealType || "Other"}</td>
       <td>${entry.foodName}</td>
       <td>${formatValue(entry.grams)} g</td>
-      <td>${formatValue(entry.calories)}</td>
-      <td>${formatValue(entry.protein)} g</td>
-      <td>${formatValue(entry.fiber)} g</td>
+      <td>${formatNutrientCell(entry.calories)}</td>
+      <td>${formatNutrientCell(entry.protein, " g")}</td>
+      <td>${formatNutrientCell(entry.fiber, " g")}</td>
       <td>${sourcePill(entry.source)}</td>
       <td>${entry.imageName ? entry.imageName : "-"}</td>
       <td><button class="row-delete" type="button" data-id="${entry.id}">Delete</button></td>
@@ -504,12 +510,21 @@ async function handleMealSubmit(event) {
       }
 
       if (!manualNutrition) {
-        throw new Error("Backend is unavailable. Use manual calories/protein or provide a working API URL.");
+        createLocalEntry({
+          ...payload,
+          calories: null,
+          protein: null,
+          fiber: null,
+          source: "pending",
+          matchedFood: foodName
+        });
+        await loadEntriesForActiveDate({ silent: true });
+        setStatus(`Added ${foodName} (${grams}g). Saved in this browser without nutrition values because backend is unavailable.`, "ok");
+      } else {
+        createLocalEntry({ ...payload, source: "manual" });
+        await loadEntriesForActiveDate({ silent: true });
+        setStatus(`Added ${foodName} (${grams}g). Saved only in this browser because backend is unavailable.`, "ok");
       }
-
-      createLocalEntry({ ...payload, source: "manual" });
-      await loadEntriesForActiveDate({ silent: true });
-      setStatus(`Added ${foodName} (${grams}g). Saved only in this browser because backend is unavailable.`, "ok");
     }
 
     resetMealFormKeepDefaults();
